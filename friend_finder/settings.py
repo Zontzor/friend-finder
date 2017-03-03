@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'friend_finder',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +77,12 @@ WSGI_APPLICATION = 'friend_finder.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'friend_finder',
+        'USER': 'ubuntu',
+        'PASSWORD': '',
+        'HOST': 'ec2-34-248-62-100.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
