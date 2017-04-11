@@ -1,6 +1,6 @@
 FROM python:3.4
 
-MAINTAINER Mark Foley
+MAINTAINER Alex Kiernan
 
 RUN apt-get -y update
 RUN apt-get -y upgrade
