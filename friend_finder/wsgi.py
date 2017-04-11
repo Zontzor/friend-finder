@@ -1,5 +1,5 @@
 """
-WSGI config for friend_finder project.
+WSGI config for wmap2017 project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
