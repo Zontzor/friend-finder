@@ -19,9 +19,17 @@ def logout_view(request):
     logout(request)
     return redirect(reverse('app:login'))
 
-@login_required
-def landing(request):
-    return render(request, 'app/landing.html')
+
+class Landing(UpdateView):
+    template_name = "app/landing.html"
+    fields = '__all__'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(Landing, self).dispatch(*args, **kwargs)
+
+    def get_object(self, queryset=None):
+        return get_user_model().objects.get(pk=self.request.user.pk)
 
 
 def login_view(request):
@@ -98,4 +106,3 @@ class UserProfile(UpdateView):
 
     def get_object(self, queryset=None):
         return get_user_model().objects.get(pk=self.request.user.pk)
-

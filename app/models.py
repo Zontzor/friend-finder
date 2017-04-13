@@ -34,7 +34,7 @@ class User(AbstractUser):
 
 class FriendGroup(models.Model):
     class Meta:
-        verbose_name = "firends list"
+        verbose_name = "friends list"
         verbose_name_plural = "friends lists"
 
     name = models.CharField(
