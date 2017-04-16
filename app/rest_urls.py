@@ -1,8 +1,6 @@
 from django.conf.urls import include, url
-from django.contrib.auth import views as auth_views
-from django.core.urlresolvers import reverse
 
-from . import views, rest_views
+from . import rest_views
 
 urlpatterns = [
     url(r'^tokenlogin/$', rest_views.token_login, name='token-login'),

@@ -19,14 +19,16 @@ def logout_view(request):
 
 class Landing(UpdateView):
     template_name = "app/landing.html"
-    fields = '__all__'
+    fields = "__all__"
 
     def get_context_data(self, **kwargs):
         context = super(Landing, self).get_context_data(**kwargs)
 
+        form = forms.AddFriendForm
         friend = Friend.objects.get(current_user=self.request.user)
         friends = friend.users.all()
 
+        context['form'] = form
         context['friends'] = friends
         return context
 

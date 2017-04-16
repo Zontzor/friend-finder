@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.gis import admin
 from django.contrib.auth.admin import UserAdmin
 
-# Register your models here.
 
 class MyUserAdmin(UserAdmin):
     readonly_fields = ('id', 'last_login', 'date_joined', 'created', 'modified', )

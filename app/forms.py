@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django import forms
-from django.forms.forms import NON_FIELD_ERRORS
 from django.forms import ModelForm
-from . import models
+from .models import User
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -59,3 +59,16 @@ class UserProfileForm(ModelForm):
             'last_location': forms.HiddenInput()
         }
 
+
+class AddFriendForm(ModelForm):
+    username = forms.CharField(
+        label='',
+        max_length=128,
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Username'}
+        )
+    )
+
+    class Meta:
+        model = User
+        fields = ('username',)

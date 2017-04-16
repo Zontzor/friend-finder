@@ -21,7 +21,9 @@
 <header>
     <table style="width: 100%">
         <tr>
-            <td class="app-header" style="text-align: left; width: 55%;">Friend Finder</td>
+            <td class="app-header" style="text-align: left; width: 55%;">
+                <a href="{% url 'app:landing' %}">Friend Finder</a>
+            </td>
             <td class="app-header-small" style="text-align: right; width: 45%;">
                 {% if user.is_authenticated %}
                     {{ user.get_full_name }} ({{ user.username }}) |

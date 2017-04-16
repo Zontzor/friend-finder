@@ -8,7 +8,12 @@
         <section>
             <div id="friend-bar">
                 <ul id="ul-friends">
-                    <li>Howdy</li>
+                    <li>
+                        {% csrf_token %}
+                        <form>
+                            {{ form }}
+                        </form>
+                    </li>
                     {% for friend in friends %}
                         <li>{{ friend.username }}</li>
                     {% endfor %}

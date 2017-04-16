@@ -1,10 +1,7 @@
-from . import models
-from friend_finder import settings
 from rest_framework import serializers
 from rest_framework_gis import serializers as geo_serializers
 from rest_framework.reverse import reverse
 from django.contrib.auth import get_user_model
-from django.contrib.gis.geos import GEOSGeometry, LineString, Point, Polygon
 
 
 class UserMeSerializer(geo_serializers.GeoFeatureModelSerializer):
