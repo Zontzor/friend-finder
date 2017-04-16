@@ -3,6 +3,10 @@ body {
   	margin: 0 auto;
 }
 
+header {
+    height: 40px;
+}
+
 .app-header {
     color: #286ac0;
     font-weight: bold;
@@ -34,7 +38,6 @@ h3 {
 }
 
 label {
-    font-family: Arial;
     font-weight: bold;
     font-size: medium;
 }
@@ -56,8 +59,4 @@ label {
 .flexbox-container > section:nth-child(2) {
 	width: 80%;
     height: 100%;
-}
-
-#map {
-    height: 975px;
 }

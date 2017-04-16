@@ -8,9 +8,9 @@
         <section>
             <div id="friend-bar">
                 <ul id="ul-friends">
-                    <li>
+                    <li id="ul-search">
                         {% csrf_token %}
-                        <form>
+                        <form id="form-friend-add">
                             {{ form }}
                         </form>
                     </li>
@@ -36,6 +36,17 @@
             </script>
             {% leaflet_map "map" callback="map_init" %}
         </section>
+
+        <script type="text/javascript">
+            function resize() {
+                var heights = window.innerHeight;
+                document.getElementById("map").style.height = heights-40 + "px";
+            }
+            resize();
+            window.onresize = function() {
+                resize();
+            };
+        </script>
     </div>
 
 {% endblock %}
