@@ -7,7 +7,7 @@
     <div class="flexbox-container">
         <section>
             <div id="friend-bar">
-                <ul id="ul-friends">
+                <ul class="list-group">
                     <li id="ul-search">
                         {% csrf_token %}
                         <form id="form-friend-add">
@@ -15,7 +15,9 @@
                         </form>
                     </li>
                     {% for friend in friends %}
-                        <li>{{ friend.username }}</li>
+                        <li class="list-group-item ">
+                            <a href="#">{{ friend.username }}</a>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
@@ -23,30 +25,11 @@
 
         <section>
             <p id="geom" style="visibility: hidden; display: none">{{ object.last_location.geojson }}</p>
-            <script>
-                function map_init(map, options) {
-                    var geom = JSON.parse($("#geom").html());
-                    var myLatLon = L.latLng([geom.coordinates[1], geom.coordinates[0]]);
-
-                    geom = L.geoJson(geom);
-                    geom.addTo(map);
-
-                    map.setView(myLatLon, 16);
-                }
-            </script>
+            <script src="{% static "app/js/map_init.js" %}"></script>
             {% leaflet_map "map" callback="map_init" %}
         </section>
 
-        <script type="text/javascript">
-            function resize() {
-                var heights = window.innerHeight;
-                document.getElementById("map").style.height = heights-40 + "px";
-            }
-            resize();
-            window.onresize = function() {
-                resize();
-            };
-        </script>
+        <script src="{% static "app/js/map_resize.js" %}"></script>
     </div>
 
 {% endblock %}

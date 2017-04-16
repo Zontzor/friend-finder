@@ -17,18 +17,6 @@ header {
     font-weight: normal;
 }
 
-ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-ul li {
-	border: 1px solid #DDDDDD;
-	height: 50px;
-	padding: 2px 0 2px 5px;
-	text-align: left;
-}
-
 h3 {
     font-family: sans-serif, Arial;
     font-weight: bold;
