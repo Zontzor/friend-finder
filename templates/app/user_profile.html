@@ -55,31 +55,11 @@
                 </tr>
                 {#                {{ form.as_table }}#}
             </table>
-
-
         </form>
     {% else %}
         <p class="error">You are not logged in.</p>
     {% endif %}
 
-    <p id="geom" style="visibility: hidden; display: none">{{ object.last_location.geojson }}</p>
-
-    <script>
-        function map_init(map, options) {
-            var geom = JSON.parse($("#geom").html());
-            var myLatLon = L.latLng([geom.coordinates[1], geom.coordinates[0]]);
-
-            geom = L.geoJson(geom);
-            geom.addTo(map);
-
-            map.setView(myLatLon, 16);
-        }
-    </script>
-
-    <h3>Last known location</h3>
-    <div style="text-align: center">
-        {% leaflet_map "my_map" callback="map_init" %}
-    </div>
 
 {% endblock %}
 

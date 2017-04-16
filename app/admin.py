@@ -1,4 +1,3 @@
-from django.contrib import admin as admin_nongeo
 from . import models
 from django.contrib.auth import get_user_model
 from django.contrib.gis import admin
@@ -17,5 +16,4 @@ class MyUserAdmin(UserAdmin):
     )
 
 admin.site.register(get_user_model(), MyUserAdmin)
-admin.site.register(models.FriendGroup, admin.OSMGeoAdmin)
-admin.site.register(models.UserFriendGroup, admin.OSMGeoAdmin)
+admin.site.register(models.Friend)

@@ -1,17 +1,14 @@
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render, redirect, render_to_response
+from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
 
 from django.forms import ValidationError
-from django.views.generic import TemplateView
-from django.views.generic.base import View
-from django.views.generic.edit import FormView, UpdateView, CreateView, DeleteView
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
 
 from . import forms
+from .models import User, Friend
 
 
 @login_required
@@ -23,6 +20,15 @@ def logout_view(request):
 class Landing(UpdateView):
     template_name = "app/landing.html"
     fields = '__all__'
+
+    def get_context_data(self, **kwargs):
+        context = super(Landing, self).get_context_data(**kwargs)
+
+        friend = Friend.objects.get(current_user=self.request.user)
+        friends = friend.users.all()
+
+        context['friends'] = friends
+        return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -40,7 +46,7 @@ def login_view(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
+            # ...friend_list
             # redirect to a new URL:
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -106,3 +112,12 @@ class UserProfile(UpdateView):
 
     def get_object(self, queryset=None):
         return get_user_model().objects.get(pk=self.request.user.pk)
+
+
+def change_friends(request, operation, pk):
+    friend = User.objects.get(pk=pk)
+    if operation == 'add':
+        Friend.make_friend(request.user, friend)
+    elif operation == 'remove':
+        Friend.lose_friend(request.user, friend)
+    return redirect('app:landing')

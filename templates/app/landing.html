@@ -4,24 +4,33 @@
 {% load leaflet_tags %}
 
 {% block content %}
-    <p>General landing page. This is a <em>placeholder</em> pending development.</p>
+    <div class="flexbox-container">
+        <section>
+            <div id="friend-bar">
+                <ul id="ul-friends">
+                    <li>Howdy</li>
+                    {% for friend in friends %}
+                        <li>{{ friend.username }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
 
-    <p id="geom" style="visibility: hidden; display: none">{{ object.last_location.geojson }}</p>
+        <section>
+            <p id="geom" style="visibility: hidden; display: none">{{ object.last_location.geojson }}</p>
+            <script>
+                function map_init(map, options) {
+                    var geom = JSON.parse($("#geom").html());
+                    var myLatLon = L.latLng([geom.coordinates[1], geom.coordinates[0]]);
 
-    <script>
-        function map_init(map, options) {
-            var geom = JSON.parse($("#geom").html());
-            var myLatLon = L.latLng([geom.coordinates[1], geom.coordinates[0]]);
+                    geom = L.geoJson(geom);
+                    geom.addTo(map);
 
-            geom = L.geoJson(geom);
-            geom.addTo(map);
-
-            map.setView(myLatLon, 16);
-        }
-    </script>
-
-    <h3>Last known location</h3>
-    <div style="text-align: center">
-        {% leaflet_map "my_map" callback="map_init" %}
+                    map.setView(myLatLon, 16);
+                }
+            </script>
+            {% leaflet_map "map" callback="map_init" %}
+        </section>
     </div>
+
 {% endblock %}

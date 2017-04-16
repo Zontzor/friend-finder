@@ -1,9 +1,4 @@
-# from django.db import models
-from django.utils import timezone
-from django.contrib.gis.geos import Point
-
 from django.contrib.gis.db import models
-from django.contrib.gis import geos
 from django.contrib.auth.models import AbstractUser
 
 from django.conf import settings
@@ -32,66 +27,35 @@ class User(AbstractUser):
             .format(self.username, self.get_full_name(), self.last_location, self.created, self.modified)
 
 
-class FriendGroup(models.Model):
+class Friend(models.Model):
     class Meta:
-        verbose_name = "friends list"
-        verbose_name_plural = "friends lists"
+        verbose_name = "friends"
+        verbose_name_plural = "friends"
 
-    name = models.CharField(
-        max_length=100,
-        blank=True,
-        verbose_name="name"
+    # All friends of current user
+    users = models.ManyToManyField(
+        User
     )
-    owner = models.ForeignKey(
+    # Owner of friend list
+    current_user = models.ForeignKey(
         User,
-        related_name="list_owner",
-        verbose_name="owner",
-        on_delete=models.CASCADE
-    )
-    members = models.ManyToManyField(
-        User,
-        through='UserFriendGroup'
-    )
-    created = models.DateTimeField(
-        auto_now_add=True
-    )
-    modified = models.DateTimeField(
-        auto_now=True
+        related_name='owner',
+        null=True
     )
 
-    # objects = models.Manager()
+    @classmethod
+    def make_friend(cls, current_user, new_friend):
+        friend, created = cls.objects.get_or_create(
+            current_user=current_user
+        )
+        friend.users.add(new_friend)
 
-    def __str__(self):
-        return "{} owned by {}".format(self.name, self.owner)
-
-
-class UserFriendGroup(models.Model):
-    class Meta:
-        unique_together = ['member', 'friend_group']
-        verbose_name = "friend group members"
-        verbose_name_plural = "friend group members"
-
-    member = models.ForeignKey(
-        User,
-        verbose_name="member",
-        on_delete=models.CASCADE
-    )
-    friend_group = models.ForeignKey(
-        FriendGroup,
-        verbose_name="friend group",
-        on_delete=models.CASCADE
-    )
-    created = models.DateTimeField(
-        auto_now_add=True
-    )
-    modified = models.DateTimeField(
-        auto_now=True
-    )
-
-    # objects = models.Manager()
-
-    def __str__(self):
-        return "{} is a member of {}".format(self.member, self.friend_group)
+    @classmethod
+    def lose_friend(cls, current_user, new_friend):
+        friend, created = cls.objects.get_or_create(
+            current_user=current_user
+        )
+        friend.users.remove(new_friend)
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
