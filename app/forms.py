@@ -118,10 +118,7 @@ class SignupForm(PasswordForm):
 class UserProfileForm(ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email', 'last_location']
-        widgets = {
-            'last_location': forms.HiddenInput()
-        }
+        fields = ['first_name', 'last_name', 'email']
 
 
 class AddFriendForm(ModelForm):

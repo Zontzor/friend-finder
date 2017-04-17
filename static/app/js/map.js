@@ -42,7 +42,7 @@ function map_set(element) {
         .addTo(map)
         .bindPopup(info)
         .openPopup();
-    }
 
-    map.panTo(LatLon, 16);
+        map.panTo(LatLon, 16);
+    }
 }
