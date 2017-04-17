@@ -6,21 +6,12 @@
 {% block content %}
     <div class="flexbox-container">
         <section>
-            <div id="friend-bar">
-                <ul class="list-group">
-                    <li id="ul-search">
-                        {% csrf_token %}
-                        <form id="form-friend-add">
-                            {{ form }}
-                        </form>
-                    </li>
-                    {% for friend in friends %}
-                        <li class="list-group-item ">
-                            <a href="#">{{ friend.username }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+            {% for friend in friends %}
+                <a href = "#" class = "list-group-item">
+                    <h4 class = "list-group-item-heading">{{ friend.username }}</h4>
+                    <p class = "list-group-item-text">{{ friend.modified }}</p>
+                </a>
+            {% endfor %}
         </section>
 
         <section>

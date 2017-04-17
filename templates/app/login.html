@@ -1,38 +1,23 @@
 {% extends "app/base.html" %}
 
 {% load staticfiles %}
+{% load i18n %}
 
 {% block content %}
-    <h3>Log In</h3>
-
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-                <p><span class="error">
-                    <strong>{{ error|escape }}</strong>
-                </span></p>
-            {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-            <p><span class="error">
-                <strong>{{ error|escape }}</strong>
-            </span></p>
-        {% endfor %}
-    {% endif %}
-
-
-    {% if user.is_authenticated %}
-        <p class="error">You are already logged in.</p>
-    {% else %}
-
-        <form method="post" action="{% url 'app:login' %}">
+    <div class="container">
+        <form method="post" action="{% url 'app:login' %}" class="form-signin" role="form">
             {% csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
+            <h2 class="form-signin-heading">{% trans "Log In" %}</h2>
+            {% if form.errors %}
+                <div class="alert alert-danger">{% trans "User or password don't match." %}</div>
+            {% endif %}
 
-            <input type="submit" value="Log In"/>
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Log In" %}</button>
+            <br>{% trans "Don't have an account?" %} <a href="{% url 'app:signup' %}">{% trans "Sign up here" %}</a>
         </form>
-    {% endif %}
-
+    </div>
 {% endblock %}

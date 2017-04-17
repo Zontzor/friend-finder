@@ -11,37 +11,48 @@
     {% leaflet_css plugins="forms" %}
 
 {#    <link rel="shortcut icon" href="{% static "Users/images/favicon.ico" %}" type="image/x-icon"/>#}
+    <link rel="stylesheet" href="{% static "app/css/bootstrap.min.css" %}" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap-theme.min.css' %}">
     <link rel="stylesheet" href="{% static "app/css/style.css" %}" type="text/css"/>
-    <link rel="stylesheet" href="{% static "app/css/bootstrap.css" %}" type="text/css"/>
 
-    <script src="{% static "app/js/jquery/3.2.1/jquery.min.js" %}"></script>
+    <script src="{% static "app/js/jquery.min.js" %}"></script>
 </head>
 <body>
 
 <header>
-    <table style="width: 100%">
-        <tr>
-            <td class="app-header" style="text-align: left; width: 55%;">
-                <a href="{% url 'app:landing' %}">Friend Finder</a>
-            </td>
-            <td class="app-header-small" style="text-align: right; width: 45%;">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'app:landing' %}">Friend Finder</a>
+            </div>
+            <ul class="nav navbar-nav">
                 {% if user.is_authenticated %}
-                    {{ user.get_full_name }} ({{ user.username }}) |
-                    <a href="{% url 'app:userprofile' %}">My Profile</a> |
-                    <a href="{% url 'app:logout' %}">Log Out</a>
+                    <li><a href="{% url 'app:landing' %}">Home</a></li>
                 {% else %}
-                    <a href="{% url 'app:login' %}">Log In</a> |
-                    <a href="{% url 'app:signup' %}">Sign Up</a>
+
                 {% endif %}
-            </td>
-        </tr>
-    </table>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                    <p class="navbar-text">{{ user.get_full_name }} ({{ user.username }})</p>
+                    <li><a href="{% url 'app:userprofile' %}">My Profile</a></li>
+                    <li><a href="{% url 'app:logout' %}">Log Out</a></li>
+                {% else %}
+                    <li><a href="{% url 'app:login' %}">Log In</a></li>
+                    <li><a href="{% url 'app:signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
 </header>
 
 <div id="content">
     {% block content %}
     {% endblock %}
 </div>
+
+<script type="text/javascript" src="{% static 'app/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/bootstrap.min.js' %}"></script>
 
 </body>
 </html>
