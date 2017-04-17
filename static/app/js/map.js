@@ -15,6 +15,8 @@ for (var i = 0; i < friends_list.length; i++) {
     })
 }
 
+var markers = {};
+
 map_init();
 
 function map_init() {
@@ -32,10 +34,15 @@ function map_set(element) {
     var distance = LatLon.distanceTo(myLatLon) < 1000 ? Math.round(LatLon.distanceTo(myLatLon)) + ' m' : Math.round(LatLon.distanceTo(myLatLon) / 1000) + ' km';
     var info = "<dl><dt>" + element.dataset.firstname + ' ' + element.dataset.lastname + "</dt>" + "<dd>" + distance + "</dd>";
 
-    var marker = L.marker(LatLon)
+    if (markers[element.dataset.id]) {
+        map.removeLayer(markers[element.dataset.id]);
+        markers[element.dataset.id] = null;
+    } else {
+        markers[element.dataset.id] = L.marker(LatLon)
         .addTo(map)
         .bindPopup(info)
         .openPopup();
+    }
 
-    map.setView(LatLon, 16);
+    map.panTo(LatLon, 16);
 }

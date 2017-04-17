@@ -8,6 +8,7 @@
         <section>
             {% for friend in friends %}
                 <a href = "#" class = "list-group-item friend-list-item"
+                    data-id = '{{ friend.id }}'
                     data-username= '{{ friend.username }}'
                     data-firstname= '{{ friend.first_name }}'
                     data-lastname= '{{ friend.last_name }}'
