@@ -7,7 +7,10 @@
     <div class="flexbox-container">
         <section>
             {% for friend in friends %}
-                <a href = "#" class = "list-group-item">
+                <a href = "#" class = "list-group-item friend-list-item"
+                    data-username= '{{ friend.username }}'
+                    data-location= '{{ friend.last_location.geojson }}'
+                    data-modified= '{{ friend.modified }}'>
                     <h4 class = "list-group-item-heading">{{ friend.username }}</h4>
                     <p class = "list-group-item-text">{{ friend.modified }}</p>
                 </a>
@@ -15,12 +18,11 @@
         </section>
 
         <section>
-            <p id="geom" style="visibility: hidden; display: none">{{ object.last_location.geojson }}</p>
-            <script src="{% static "app/js/map_init.js" %}"></script>
+            <p id="geom">{{ object.last_location.geojson }}</p>
             {% leaflet_map "map" callback="map_init" %}
         </section>
 
-        <script src="{% static "app/js/map_resize.js" %}"></script>
+        <script src="{% static "app/js/map.js" %}"></script>
     </div>
 
 {% endblock %}

@@ -102,3 +102,9 @@
   border-radius: 4px;
   z-index: 3;
 }
+
+/* Geo */
+#geom {
+  visibility: hidden;
+  display: none;
+}
