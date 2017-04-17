@@ -103,6 +103,10 @@
   z-index: 3;
 }
 
+#map {
+  height: 900px;
+}
+
 /* Geo */
 #geom {
   visibility: hidden;

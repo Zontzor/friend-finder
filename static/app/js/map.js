@@ -1,12 +1,10 @@
-/**
- * Created by alex on 11/04/17.
- */
-
+const map = L.map('map').setView([53.3, -6.3], 5);
 const friends_list = document.getElementsByClassName("friend-list-item");
-var leafletmap = null;
 
-function map_init(map, options) {
-    leafletmap = map;
+L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiem9udHppcCIsImEiOiJjajFtbGJrYjEwMDAxMzNvdGs4OXByM2dhIn0.hzPQNENTIuVgt7fPXsUD5Q', {})
+    .addTo(map);
+
+function map_init() {
     var geom = JSON.parse($("#geom").html());
     var myLatLon = L.latLng([geom.coordinates[1], geom.coordinates[0]]);
 
@@ -25,18 +23,6 @@ function map_set(element) {
 
     leafletmap.setView(myLatLon, 16);
 }
-
-function resize() {
-    var heights = window.innerHeight;
-    document.getElementById("map").style.height = heights-52 + "px";
-}
-
-resize();
-
-window.onresize = function() {
-    resize();
-};
-
 
 for (var i = 0; i < friends_list.length; i++) {
     friends_list[i].addEventListener('click', function(e) {

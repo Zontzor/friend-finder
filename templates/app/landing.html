@@ -19,10 +19,14 @@
 
         <section>
             <p id="geom">{{ object.last_location.geojson }}</p>
-            {% leaflet_map "map" callback="map_init" %}
+
+            <div id="map">
+
+            </div>
         </section>
 
         <script src="{% static "app/js/map.js" %}"></script>
+        <script src="{% static "app/js/resize.js" %}"></script>
     </div>
 
 {% endblock %}
