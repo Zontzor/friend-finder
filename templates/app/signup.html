@@ -8,7 +8,13 @@
         <form method="post" action="." class="form-register" role="form">{% csrf_token %}
             <h2 class="form-register-heading">{% trans "Sign up" %}</h2>
                 {% if form.errors %}
-                    <div class="alert alert-danger">{% trans "Check the red fields." %}</div>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Error! </strong>{{ error|escape }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
                 {% endif %}
 
                 {% for field in form %}
