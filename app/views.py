@@ -25,8 +25,12 @@ class Landing(UpdateView):
         context = super(Landing, self).get_context_data(**kwargs)
 
         form = forms.AddFriendForm
-        friend = Friend.objects.get(current_user=self.request.user)
-        friends = friend.users.all()
+
+        try:
+            friend = Friend.objects.get(current_user=self.request.user)
+            friends = friend.users.all()
+        except:
+            friends = {}
 
         context['form'] = form
         context['friends'] = friends

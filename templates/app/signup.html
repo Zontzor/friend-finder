@@ -5,7 +5,8 @@
 
 {% block content %}
     <div class="container">
-        <form method="post" action="." class="form-register" role="form">{% csrf_token %}
+        <form method="post" action="." class="form-register" role="form">
+            {% csrf_token %}
             <h2 class="form-register-heading">{% trans "Sign up" %}</h2>
                 {% if form.errors %}
                     {% for field in form %}
