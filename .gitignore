@@ -147,3 +147,6 @@ ENV/
 pyvenv.cfg
 .venv
 pip-selfcheck.json
+
+# Secrets
+friend_finder/settings_secret.py
