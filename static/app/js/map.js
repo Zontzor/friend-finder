@@ -2,9 +2,13 @@
 const mygeom = JSON.parse($("#geom").html());
 const myLatLon = L.latLng([mygeom.coordinates[1], mygeom.coordinates[0]]);
 
+// Maps
+const mapUrlLive = 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiem9udHppcCIsImEiOiJjajFtbGJrYjEwMDAxMzNvdGs4OXByM2dhIn0.hzPQNENTIuVgt7fPXsUD5Q';
+const mapUrlDev = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
+
 // Create map
 const map = L.map('map').setView([53.3, -6.3], 5);
-L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiem9udHppcCIsImEiOiJjajFtbGJrYjEwMDAxMzNvdGs4OXByM2dhIn0.hzPQNENTIuVgt7fPXsUD5Q', {})
+L.tileLayer(mapUrlDev, {})
     .addTo(map);
 
 // Init friends list geo
