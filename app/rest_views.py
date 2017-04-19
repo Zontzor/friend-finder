@@ -1,20 +1,14 @@
-from . import models
 from . import serializers
-from rest_framework import permissions
-from . import permissions as my_permissions
-from friend_finder import settings
 
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import authenticate, login
 from rest_framework import permissions, authentication, status, generics
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
 from rest_framework import exceptions
 from django.contrib.auth import get_user_model
-from django.contrib.gis.geos import GEOSGeometry, LineString, Point, Polygon
+from django.contrib.gis.geos import Point
 from rest_framework.authtoken.models import Token
-# from rest_framework.decorators import api_view, permission_classes
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 
@@ -112,4 +106,4 @@ def token_login(request):
         else:
             return Response({"detail": "Inactive account"}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response({"detail": "Invalid User Id of Password"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": "Invalid User Id of Password"}, status=status.HTTP_401_UNAUTHORIZED)
