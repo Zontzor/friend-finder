@@ -11,13 +11,17 @@ from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+from .models import Friend
+
 
 class UsersList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = serializers.UserOtherSerializer
 
     def get_queryset(self):
-        return get_user_model().objects.all().order_by("username")
+        friend = Friend.objects.get(current_user=self.request.user)
+        friends = friend.users.all()
+        return friends.order_by("username")
 
     def get_serializer_context(self):
         return {"request": self.request}
@@ -70,12 +74,8 @@ class UpdatePosition(generics.UpdateAPIView):
         try:
             lat1 = float(self.request.data.get("lat", False))
             lon1 = float(self.request.data.get("lon", False))
-            # lat2 = float(self.request.query_params.get("lat", False))
-            # lon2 = float(self.request.query_params.get("lon", False))
             if lat1 and lon1:
                 point = Point(lon1, lat1)
-            # elif lat2 and lon2:
-            #     point = Point(lon2, lat2)
             else:
                 point = None
 
