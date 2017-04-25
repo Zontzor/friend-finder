@@ -136,7 +136,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/home/alex/Coding/web-mapping/friend-finder/logs/debug.log',
+            'filename': '/var/log/django/debug.log',
             'formatter': 'simple'
         },
     },
