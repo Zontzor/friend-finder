@@ -13,6 +13,8 @@ RUN apt-get -y install libgdal-dev
 COPY . /app
 WORKDIR /app
 
+RUN mkdir -p /var/log/django
+
 # Update pip and install reqs
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
