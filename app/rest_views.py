@@ -1,4 +1,5 @@
 from . import serializers
+import logging
 
 from django.contrib.auth import authenticate, login
 from rest_framework import permissions, authentication, status, generics
@@ -12,6 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 from .models import Friend
+
+logger = logging.getLogger('friend_finder')
 
 
 class UsersList(generics.ListAPIView):
@@ -78,6 +81,8 @@ class UpdatePosition(generics.UpdateAPIView):
                 point = Point(lon1, lat1)
             else:
                 point = None
+
+            logger.info('Location: ' + str(lat1) + ',' + str(lon1))
 
             if point:
                 # serializer.instance.last_location = point
