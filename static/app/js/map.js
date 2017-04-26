@@ -1,3 +1,6 @@
+const myGeom = JSON.parse($("#geom").html());
+const myLatLon = L.latLng([myGeom.coordinates[1], myGeom.coordinates[0]]);
+
 // Maps (Live and Dev)
 // const mapUrl = 'https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiem9udHppcCIsImEiOiJjajFtbGJrYjEwMDAxMzNvdGs4OXByM2dhIn0.hzPQNENTIuVgt7fPXsUD5Q';
 const mapUrl = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
@@ -5,24 +8,10 @@ const mapUrl = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street
 // Friend marker array
 const markers = {};
 
-// User location
-var myLatLon;
-
 // Create map
 const map = L.map('map').setView([53.3, -6.3], 5);
     L.tileLayer(mapUrl, {})
         .addTo(map);
-
-// Try to get user location
-try {
-    const myGeom = JSON.parse($("#geom").html());
-    myLatLon = L.latLng([myGeom.coordinates[1], myGeom.coordinates[0]]);
-} catch (err) {
-    myLatLon = L.latLng(['53.3498', '-6.2603']);
-} finally {
-    init_map();
-}
-
 
 function init_map() {
     // Init user geo

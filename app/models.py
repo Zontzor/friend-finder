@@ -11,7 +11,7 @@ class User(AbstractUser):
     last_location = models.PointField(
         verbose_name="last known location",
         blank=True,
-        null=True
+        default='SRID=4326;POINT(53.3498 -6.2603)'
     )
     created = models.DateTimeField(
         auto_now_add=True
@@ -19,8 +19,6 @@ class User(AbstractUser):
     modified = models.DateTimeField(
         auto_now=True
     )
-
-    # objects = models.GeoManager()
 
     def __str__(self):
         return "{}, ({}), last seen at {} ... cr={}, mod={}" \
