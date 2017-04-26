@@ -49,6 +49,9 @@ function set_user() {
 
 
 function set_friend(element) {
+    if (element.dataset.location === '') {
+        return;
+    }
     var geom = JSON.parse(element.dataset.location);
     var LatLon = L.latLng([geom.coordinates[1], geom.coordinates[0]]);
     var distance = LatLon.distanceTo(myLatLon) < 1000 ? Math.round(LatLon.distanceTo(myLatLon)) + ' m' : Math.round(LatLon.distanceTo(myLatLon) / 1000) + ' km';
