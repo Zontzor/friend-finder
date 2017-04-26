@@ -13,6 +13,8 @@ const map = L.map('map').setView([53.3, -6.3], 5);
     L.tileLayer(mapUrl, {})
         .addTo(map);
 
+init_map();
+
 function init_map() {
     // Init user geo
     set_user();
