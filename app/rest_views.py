@@ -12,18 +12,17 @@ from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
-from .models import Friend
+from friendship.models import Friend
 
 logger = logging.getLogger('friend_finder')
 
 
-class UsersList(generics.ListAPIView):
+class FriendList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = serializers.UserOtherSerializer
 
     def get_queryset(self):
-        friend = Friend.objects.get(current_user=self.request.user)
-        friends = friend.users.all()
+        friends = Friend.objects.friends(self.request.user)
         return friends.order_by("username")
 
     def get_serializer_context(self):

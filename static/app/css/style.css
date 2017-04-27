@@ -16,6 +16,11 @@
     height: 100%;
 }
 
+#add-user {
+    position: absolute;
+    bottom: 0;
+}
+
 /* Form Sign In*/
 
 .form-signin {

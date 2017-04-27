@@ -5,9 +5,9 @@
 
 {% block content %}
     <div class="container">
-        <h3>User Profile</h3>
-
         {% if user.is_authenticated %}
+            <h3>User Profile</h3>
+
             <form method="post" action="{% url 'app:userprofile' %}" >
                 {% csrf_token %}
 

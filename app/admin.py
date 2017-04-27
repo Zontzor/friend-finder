@@ -15,4 +15,3 @@ class MyUserAdmin(UserAdmin):
     )
 
 admin.site.register(get_user_model(), MyUserAdmin)
-admin.site.register(models.Friend)

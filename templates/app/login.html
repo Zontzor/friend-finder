@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="container">
-        <form method="post" action="{% url 'app:login' %}" class="form-signin" role="form">
+        <form method="post" action="{% url 'friendship:add' %}" class="form-signin" role="form">
             {% csrf_token %}
             <h2 class="form-signin-heading">{% trans "Log In" %}</h2>
             {% if form.errors %}

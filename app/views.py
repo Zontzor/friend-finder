@@ -8,7 +8,8 @@ from django.forms import ValidationError
 from django.views.generic.edit import UpdateView
 
 from . import forms
-from .models import User, Friend
+from .models import User
+from friendship.models import Friend
 
 
 @login_required
@@ -18,8 +19,8 @@ def logout_view(request):
 
 
 class Landing(UpdateView):
+    form_class = forms.AddFriendForm
     template_name = "app/landing.html"
-    fields = "__all__"
 
     def get_context_data(self, **kwargs):
         context = super(Landing, self).get_context_data(**kwargs)
@@ -27,8 +28,7 @@ class Landing(UpdateView):
         form = forms.AddFriendForm
 
         try:
-            friend = Friend.objects.get(current_user=self.request.user)
-            friends = friend.users.all()
+            friends = Friend.objects.friends(self.request.user)
         except:
             friends = {}
 
@@ -120,10 +120,6 @@ class UserProfile(UpdateView):
         return get_user_model().objects.get(pk=self.request.user.pk)
 
 
-def change_friends(request, operation, pk):
-    friend = User.objects.get(pk=pk)
-    if operation == 'add':
-        Friend.make_friend(request.user, friend)
-    elif operation == 'remove':
-        Friend.lose_friend(request.user, friend)
-    return redirect('app:landing')
+class AddFriends(UpdateView):
+    form_class = forms.UserProfileForm
+    template_name = "app/user_profile.html"
