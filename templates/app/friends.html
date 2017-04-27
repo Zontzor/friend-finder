@@ -1,0 +1,27 @@
+{% extends "app/base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+    <div class="container">
+    {% if user.is_authenticated %}
+        <h3>Friend Manager</h3>
+
+        <h4>Add a Friend</h4>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+
+            <button class="btn btn-primary" type="submit">Add</button>
+        </form>
+
+        <h4>Friend Requests</h4>
+
+    {% else %}
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> You are not logged in.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

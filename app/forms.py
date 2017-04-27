@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django import forms
 from django.forms import ModelForm
-from .models import User
 
 
 class LoginForm(forms.Form):
@@ -121,15 +120,5 @@ class UserProfileForm(ModelForm):
         fields = ['first_name', 'last_name', 'email']
 
 
-class AddFriendForm(ModelForm):
-    username = forms.CharField(
-        label='',
-        max_length=128,
-        widget=forms.TextInput(
-            attrs={'placeholder': 'Username'}
-        )
-    )
-
-    class Meta:
-        model = User
-        fields = ('username',)
+class AddFriendForm(forms.Form):
+    username = forms.CharField(label='', max_length=100, widget=forms.TextInput(attrs={'placeholder': 'Username'}))

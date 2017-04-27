@@ -8,8 +8,10 @@ from django.forms import ValidationError
 from django.views.generic.edit import UpdateView
 
 from . import forms
-from .models import User
 from friendship.models import Friend
+from . models import User
+
+from django.http import HttpResponseRedirect
 
 
 @login_required
@@ -19,7 +21,7 @@ def logout_view(request):
 
 
 class Landing(UpdateView):
-    form_class = forms.AddFriendForm
+    fields = "__all__"
     template_name = "app/landing.html"
 
     def get_context_data(self, **kwargs):
@@ -117,28 +119,24 @@ class UserProfile(UpdateView):
         return get_user_model().objects.get(pk=self.request.user.pk)
 
 
-class AddFriends(UpdateView):
-    form_class = forms.AddFriendForm
-    template_name = "app/add_friends.html"
+def add_friend_view(request):
+    if request.GET:
+        form = forms.AddFriendForm()
 
-    def get_context_data(self, **kwargs):
-        context = super(AddFriends, self).get_context_data(**kwargs)
+    elif request.POST:
+        form = forms.AddFriendForm(request.POST)
+        if form.is_valid():
+            try:
+                other_user = User.objects.get(username=form.cleaned_data['username'])
 
-        try:
-            friends = Friend.objects.friends(self.request.user)
-        except:
-            friends = {}
+                Friend.objects.add_friend(
+                    request.user,  # The sender
+                    other_user,  # The recipient
+                    message='Hi! I would like to add you')  # This message is optional
+            except:
+                return redirect(reverse('app:friends'))
 
-        context['friends'] = friends
-        return context
+    else:
+        form = forms.AddFriendForm()
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(AddFriends, self).dispatch(*args, **kwargs)
-
-    def get_object(self, queryset=None):
-        return get_user_model().objects.get(pk=self.request.user.pk)
-
-    def form_valid(self, form):
-        return super(AddFriends, self).form_valid(form)
-
+    return render(request, 'app/friends.html', {'form': form})
