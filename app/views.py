@@ -8,7 +8,7 @@ from django.forms import ValidationError
 from django.views.generic.edit import UpdateView
 
 from . import forms
-from friendship.models import Friend
+from friendship.models import Friend, FriendshipRequest
 from . models import User
 
 from django.http import HttpResponseRedirect
@@ -139,4 +139,16 @@ def add_friend_view(request):
     else:
         form = forms.AddFriendForm()
 
-    return render(request, 'app/friends.html', {'form': form})
+    requests = Friend.objects.unrejected_requests(user=request.user)
+
+    return render(request, 'app/friends.html', {'form': form, 'requests': requests})
+
+
+def manage_friend_request(request, operation, pk):
+    friend_request = FriendshipRequest.objects.get(pk=pk)
+    if operation == 'accept':
+        friend_request.accept()
+    elif operation == 'reject':
+        friend_request.reject()
+    return redirect('app:friends')
+

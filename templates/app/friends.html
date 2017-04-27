@@ -17,7 +17,17 @@
         </form>
 
         <h4>Friend Requests</h4>
-
+        <div id="friend-list">
+            {% for request in requests %}
+                <a href = "#" class = "list-group-item friend-list-item">
+                    <h4 class = "list-group-item-heading">{{ request.from_user.username }}</h4>
+                    <p class = "list-group-item-text">{{ request.message }}</p>
+                </a>
+                <a href="{% url 'app:manage_friend_requests' operation='accept' pk=request.id %}">
+                    <button type="button" class="btn btn-default">Accept</button>
+                </a>
+            {% endfor %}
+        </div>
     {% else %}
             <div class="alert alert-warning">
                 <strong>Warning!</strong> You are not logged in.
