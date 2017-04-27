@@ -35,7 +35,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
                     <p class="navbar-text">{{ user.get_full_name }} ({{ user.username }})</p>
-                    <li><a href="{% url 'app:addfriends' %}">Add Friends</a></li>
+                    <li><a href="{% url 'app:friends' %}">Friends</a></li>
                     <li><a href="{% url 'app:userprofile' %}">My Profile</a></li>
                     <li><a href="{% url 'app:logout' %}">Log Out</a></li>
                 {% else %}

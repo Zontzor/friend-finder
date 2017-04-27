@@ -25,14 +25,11 @@ class Landing(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(Landing, self).get_context_data(**kwargs)
 
-        form = forms.AddFriendForm
-
         try:
             friends = Friend.objects.friends(self.request.user)
         except:
             friends = {}
 
-        context['form'] = form
         context['friends'] = friends
         return context
 
@@ -121,5 +118,27 @@ class UserProfile(UpdateView):
 
 
 class AddFriends(UpdateView):
-    form_class = forms.UserProfileForm
-    template_name = "app/user_profile.html"
+    form_class = forms.AddFriendForm
+    template_name = "app/add_friends.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(AddFriends, self).get_context_data(**kwargs)
+
+        try:
+            friends = Friend.objects.friends(self.request.user)
+        except:
+            friends = {}
+
+        context['friends'] = friends
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AddFriends, self).dispatch(*args, **kwargs)
+
+    def get_object(self, queryset=None):
+        return get_user_model().objects.get(pk=self.request.user.pk)
+
+    def form_valid(self, form):
+        return super(AddFriends, self).form_valid(form)
+
