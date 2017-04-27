@@ -26,6 +26,9 @@
                 <a href="{% url 'app:manage_friend_requests' operation='accept' pk=request.id %}">
                     <button type="button" class="btn btn-default">Accept</button>
                 </a>
+                <a href="{% url 'app:manage_friend_requests' operation='reject' pk=request.id %}">
+                    <button type="button" class="btn btn-default">Reject</button>
+                </a>
             {% endfor %}
         </div>
     {% else %}
