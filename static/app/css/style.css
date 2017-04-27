@@ -21,6 +21,10 @@
     bottom: 0;
 }
 
+.friend-header {
+    padding-top: 40px;
+}
+
 /* Form Sign In*/
 
 .form-signin {

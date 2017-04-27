@@ -139,9 +139,10 @@ def add_friend_view(request):
     else:
         form = forms.AddFriendForm()
 
-    requests = Friend.objects.unrejected_requests(user=request.user)
+    requests_sent = Friend.objects.sent_requests(user=request.user)
+    requests_received = Friend.objects.unrejected_requests(user=request.user)
 
-    return render(request, 'app/friends.html', {'form': form, 'requests': requests})
+    return render(request, 'app/friends.html', {'form': form, 'requests_sent': requests_sent, 'requests_received': requests_received})
 
 
 def manage_friend_request(request, operation, pk):
