@@ -22,8 +22,7 @@ class FriendList(generics.ListAPIView):
     serializer_class = serializers.UserOtherSerializer
 
     def get_queryset(self):
-        friends = Friend.objects.friends(self.request.user)
-        return friends.order_by("username")
+        return Friend.objects.friends(self.request.user)
 
     def get_serializer_context(self):
         return {"request": self.request}

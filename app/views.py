@@ -11,8 +11,6 @@ from . import forms
 from friendship.models import Friend, FriendshipRequest
 from . models import User
 
-from django.http import HttpResponseRedirect
-
 
 @login_required
 def logout_view(request):
@@ -32,6 +30,7 @@ class Landing(UpdateView):
         except:
             friends = {}
 
+        context['usergeo'] = self.request.user.last_location.geojson
         context['friends'] = friends
         return context
 
