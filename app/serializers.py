@@ -4,7 +4,7 @@ from rest_framework.reverse import reverse
 from django.contrib.auth import get_user_model
 
 
-class UserMeSerializer(geo_serializers.GeoFeatureModelSerializer):
+class UserSerializer(geo_serializers.GeoFeatureModelSerializer):
     url = serializers.SerializerMethodField()
 
     class Meta:
@@ -15,10 +15,10 @@ class UserMeSerializer(geo_serializers.GeoFeatureModelSerializer):
             "is_active", "date_joined", "last_login", "url")
 
     def get_url(self, obj):
-        return self.context["request"].build_absolute_uri(reverse("rest:user-username", kwargs={"uid": obj.pk}))
+        return self.context["request"].build_absolute_uri(reverse("api:user-username", kwargs={"uid": obj.pk}))
 
 
-class UserOtherSerializer(geo_serializers.GeoFeatureModelSerializer):
+class FriendSerializer(geo_serializers.GeoFeatureModelSerializer):
     url = serializers.SerializerMethodField()
 
     class Meta:
@@ -27,4 +27,4 @@ class UserOtherSerializer(geo_serializers.GeoFeatureModelSerializer):
         fields = ("id", "username", "first_name", "last_name", "email", "url")
 
     def get_url(self, obj):
-        return self.context["request"].build_absolute_uri(reverse("rest:user-username", kwargs={"uid": obj.pk}))
+        return self.context["request"].build_absolute_uri(reverse("api:user-username", kwargs={"uid": obj.pk}))

@@ -13,13 +13,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
 from friendship.models import Friend
+from . models import User
 
 logger = logging.getLogger('friend_finder')
 
 
 class FriendList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = serializers.UserOtherSerializer
+    serializer_class = serializers.FriendSerializer
 
     def get_queryset(self):
         return Friend.objects.friends(self.request.user)
@@ -28,15 +29,36 @@ class FriendList(generics.ListAPIView):
         return {"request": self.request}
 
 
-class UserMe_R(generics.RetrieveAPIView):
+@api_view(["GET", "POST", ])
+@permission_classes((permissions.AllowAny,))
+def friends(request):
+    if request.method == 'POST':
+        try:
+            friend_data = request.data
+            other_user = User.objects.get(username=friend_data['username'])
+
+            if Friend.objects.are_friends(request.user, other_user):
+                return Response({"message": "Already friends"}, status=status.HTTP_400_BAD_REQUEST)
+
+            Friend.objects.add_friend(
+                request.user,  # The sender
+                other_user,  # The recipient
+                message='Hi! I would like to add you')  # This message is optional
+
+            return Response({"message": "Friend request sent"}, status=status.HTTP_200_OK)
+        except:
+            return Response({"message": "Friend request failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CurrentUser(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = serializers.UserMeSerializer
+    serializer_class = serializers.UserSerializer
 
     def get_object(self):
         return get_user_model().objects.get(email=self.request.user.email)
 
 
-class UserOther_R(generics.RetrieveAPIView):
+class OtherUser(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_object(self):
@@ -54,15 +76,15 @@ class UserOther_R(generics.RetrieveAPIView):
 
     def get_serializer_class(self):
         if self.request.user == self.other:
-            return serializers.UserMeSerializer
+            return serializers.UserSerializer
         else:
-            return serializers.UserOtherSerializer
+            return serializers.FriendSerializer
 
 
 class UpdatePosition(generics.UpdateAPIView):
     authentication_classes = (authentication.TokenAuthentication, authentication.SessionAuthentication)
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = serializers.UserMeSerializer
+    serializer_class = serializers.UserSerializer
 
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
@@ -73,31 +95,33 @@ class UpdatePosition(generics.UpdateAPIView):
 
     def perform_update(self, serializer, **kwargs):
         try:
-            lat1 = float(self.request.data.get("lat", False))
-            lon1 = float(self.request.data.get("lon", False))
-            if lat1 and lon1:
-                point = Point(lon1, lat1)
+            geo_data = self.request.data
+            lat = geo_data["lat"]
+            lon = geo_data["lon"]
+            if lat and lon:
+                point = Point(lon, lat)
             else:
                 point = None
 
-            logger.info('Location: ' + str(lat1) + ',' + str(lon1))
+            logger.info('Location: ' + str(lat) + ',' + str(lon))
 
             if point:
-                # serializer.instance.last_location = point
                 serializer.save(last_location = point)
             return serializer
         except:
             pass
 
 
-@api_view(["GET", ])
+@api_view(["POST", ])
 @permission_classes((permissions.AllowAny,))
-# @csrf_exempt
 def token_login(request):
-    if (not request.GET["username"]) or (not request.GET["password"]):
+    login_data = request.data
+    username = login_data["username"]
+    password = login_data["password"]
+    if (not username) or (not password):
         return Response({"detail": "Missing username and/or password"}, status=status.HTTP_400_BAD_REQUEST)
 
-    user = authenticate(username=request.GET["username"], password=request.GET["password"])
+    user = authenticate(username=username, password=password)
     if user:
         if user.is_active:
             login(request, user)
