@@ -112,6 +112,7 @@ class UpdatePosition(generics.UpdateAPIView):
             pass
 
 
+@csrf_exempt
 @api_view(["POST", ])
 @permission_classes((permissions.AllowAny,))
 def token_login(request):
