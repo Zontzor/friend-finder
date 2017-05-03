@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^user/(?P<uid>\d+)/$', rest_views.OtherUser.as_view(), name='user-username'),
     url(r'^position/$', rest_views.UpdatePosition.as_view(), name='update-position'),
     url(r'^friends/$', rest_views.friends, name='friends'),
+    url(r'^register/$', rest_views.register, name='register'),
 ]

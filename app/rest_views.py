@@ -133,7 +133,6 @@ class RequestsSentList(generics.ListAPIView):
         return {"request": self.request}
 
 
-
 @csrf_exempt
 @api_view(["POST", ])
 @permission_classes((permissions.AllowAny,))
@@ -158,3 +157,27 @@ def token_login(request):
             return Response({"detail": "Inactive account"}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"detail": "Invalid User Id of Password"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@csrf_exempt
+@api_view(["POST", ])
+@permission_classes((permissions.AllowAny,))
+def register(request):
+    register_data = request.data
+    username = register_data["username"]
+    password = register_data["password"]
+
+    if (not username) or (not password):
+        return Response({"detail": "Missing username and/or password"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = get_user_model().objects.get(username=username)
+        if user:
+            return Response({"detail": "user already exists"}, status=status.HTTP_400_BAD_REQUEST)
+    except get_user_model().DoesNotExist:
+        user = get_user_model().objects.create_user(username=username)
+
+        user.set_password(password)
+        user.save()
+
+        return Response({"detail": "User created"}, status=status.HTTP_200_OK)
