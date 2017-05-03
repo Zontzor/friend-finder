@@ -12,7 +12,7 @@ class UserSerializer(geo_serializers.GeoFeatureModelSerializer):
         geo_field = "last_location"
         fields = (
             "id", "username", "first_name", "last_name", "email", "is_superuser", "is_staff",
-            "is_active", "date_joined", "last_login", "url")
+            "is_active", "date_joined", "last_login", "url", "modified")
 
     def get_url(self, obj):
         return self.context["request"].build_absolute_uri(reverse("api:user-username", kwargs={"uid": obj.pk}))
@@ -24,7 +24,7 @@ class FriendSerializer(geo_serializers.GeoFeatureModelSerializer):
     class Meta:
         model = get_user_model()
         geo_field = "last_location"
-        fields = ("id", "username", "first_name", "last_name", "email", "url")
+        fields = ("id", "username", "first_name", "last_name", "email", "url", "modified")
 
     def get_url(self, obj):
         return self.context["request"].build_absolute_uri(reverse("api:user-username", kwargs={"uid": obj.pk}))

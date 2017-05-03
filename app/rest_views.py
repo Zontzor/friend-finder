@@ -118,6 +118,7 @@ def token_login(request):
     login_data = request.data
     username = login_data["username"]
     password = login_data["password"]
+
     if (not username) or (not password):
         return Response({"detail": "Missing username and/or password"}, status=status.HTTP_400_BAD_REQUEST)
 
