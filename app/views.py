@@ -151,4 +151,3 @@ def manage_friend_request(request, operation, pk):
     elif operation == 'reject':
         friend_request.reject()
     return redirect('app:friends')
-

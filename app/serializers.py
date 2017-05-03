@@ -4,6 +4,7 @@ from rest_framework.reverse import reverse
 from django.contrib.auth import get_user_model
 from friendship.models import FriendshipRequest
 
+
 class UserSerializer(geo_serializers.GeoFeatureModelSerializer):
     url = serializers.SerializerMethodField()
 
