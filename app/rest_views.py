@@ -55,7 +55,7 @@ class CurrentUser(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer
 
     def get_object(self):
-        return get_user_model().objects.get(email=self.request.user.email)
+        return get_user_model().objects.get(username=self.request.user.username)
 
 
 class OtherUser(generics.RetrieveAPIView):
@@ -91,7 +91,7 @@ class UpdatePosition(generics.UpdateAPIView):
         return super(UpdatePosition, self).dispatch(*args, **kwargs)
 
     def get_object(self):
-        return get_user_model().objects.get(email=self.request.user.email)
+        return get_user_model().objects.get(username=self.request.user.username)
 
     def perform_update(self, serializer, **kwargs):
         try:
