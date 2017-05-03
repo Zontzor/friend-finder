@@ -29,8 +29,8 @@ class FriendList(generics.ListAPIView):
         return {"request": self.request}
 
 
-@api_view(["GET", "POST", ])
-@permission_classes((permissions.AllowAny,))
+@api_view(["DELETE", "POST", ])
+@permission_classes((permissions.IsAuthenticated,))
 def friends(request):
     if request.method == 'POST':
         try:
@@ -48,6 +48,16 @@ def friends(request):
             return Response({"message": "Friend request sent"}, status=status.HTTP_200_OK)
         except:
             return Response({"message": "Friend request failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        try:
+            friend_data = request.data
+            other_user = User.objects.get(username=friend_data['username'])
+
+            Friend.objects.remove_friend(request.user, other_user)
+            return Response({"message": "Friend removed"}, status=status.HTTP_200_OK)
+        except:
+            return Response({"message": "Friend removal failed"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CurrentUser(generics.RetrieveAPIView):
@@ -110,6 +120,18 @@ class UpdatePosition(generics.UpdateAPIView):
             return serializer
         except:
             pass
+
+
+class RequestsSentList(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = serializers.FriendSerializer
+
+    def get_queryset(self):
+        return Friend.objects.friends(self.request.user)
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
 
 
 @csrf_exempt

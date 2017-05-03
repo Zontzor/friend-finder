@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework_gis import serializers as geo_serializers
 from rest_framework.reverse import reverse
 from django.contrib.auth import get_user_model
-
+from friendship.models import FriendshipRequest
 
 class UserSerializer(geo_serializers.GeoFeatureModelSerializer):
     url = serializers.SerializerMethodField()
@@ -28,3 +28,8 @@ class FriendSerializer(geo_serializers.GeoFeatureModelSerializer):
 
     def get_url(self, obj):
         return self.context["request"].build_absolute_uri(reverse("api:user-username", kwargs={"uid": obj.pk}))
+
+
+class FriendRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendshipRequest
